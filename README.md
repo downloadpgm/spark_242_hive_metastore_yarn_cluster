@@ -8,8 +8,8 @@ This Docker image contains Spark binaries prebuilt and uploaded in Docker Hub.
 
 ## Build Spark image
 ```shell
-$ wget https://archive.apache.org/dist/spark/spark-2.4.2/spark-2.4.2-bin-hadoop2.7.tgz
-$ docker image build -t mkenjis/ubspkcluster1_img
+$ wget https://archive.apache.org/dist/spark/spark-2.3.2/spark-2.3.2-bin-hadoop2.7.tgz
+$ docker image build -t mkenjis/ubspkcluster1_img .
 $ docker login   # provide user and password
 $ docker image push mkenjis/ubspkcluster1_img
 ```
@@ -29,6 +29,7 @@ Creates the following Hadoop files on $SPARK_HOME/conf directory :
 - hdfs-site.xml
 - hive-site.xml
 - spark-env.sh
+- spark-defaults.conf
 
 ## Start Swarm cluster
 
@@ -76,7 +77,7 @@ xf8qop5183mj   spk_spk_cli   replicated   0/1        mkenjis/ubspkcluster1_img:l
 
 ## Set up Spark client
 
-1. access spark client node and add parameters to spark-defaults.conf (in spark client)
+1. access spark client node
 ```shell
 $ docker container ls   # run it in each node and check which <container ID> is running the Spark client constainer
 CONTAINER ID   IMAGE                                 COMMAND                  CREATED         STATUS         PORTS                                          NAMES
@@ -84,11 +85,6 @@ CONTAINER ID   IMAGE                                 COMMAND                  CR
 e9ceb97de97a   mkenjis/ubhdpclu_vol_img:latest           "/usr/bin/supervisord"   4 minutes ago   Up 4 minutes   9000/tcp                                       yarn_hdp1.1.58koqncyw79aaqhirapg502os
 
 $ docker container exec -it <spk_cli ID> bash
-
-$ vi $SPARK_HOME/conf/spark-defaults.conf
-spark.driver.memory  1024m
-spark.yarn.am.memory 1024m
-spark.executor.memory  1536m
 ```
 
 2. start spark-shell
@@ -105,7 +101,7 @@ Welcome to
       ____              __
      / __/__  ___ _____/ /__
     _\ \/ _ \/ _ `/ __/  '_/
-   /___/ .__/\_,_/_/ /_/\_\   version 2.4.2
+   /___/ .__/\_,_/_/ /_/\_\   version 2.3.2
       /_/
          
 Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_181)
